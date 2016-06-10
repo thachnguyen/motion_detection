@@ -1,11 +1,10 @@
-A probabilistic model for detecting rigid domains in
-protein structures
+A probabilistic model for detecting rigid domains in protein structures
 ========================================
 
 Compatibility
 -------------
 
-In short: CSB requires python 2.7 or higher.
+In short: MoDet requires python 2.7 or higher.
 
 
 
