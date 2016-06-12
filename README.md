@@ -1,14 +1,12 @@
 A probabilistic model for detecting rigid domains in protein structures
 ========================================
-This is a python program 
+This is a python program to detect rigid domain in protein structure using Gibbs sampler.
 
 
 Compatibility
 -------------
 
 In short: Motion Detection program requires python 2.7 or higher.
-
-
 
 Usage 
 ------------
