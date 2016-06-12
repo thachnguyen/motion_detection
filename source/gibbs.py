@@ -10,6 +10,23 @@ from em import EMFitter, SegmentMixture, SegmentMixture2, Reporter
 from csb.statistics.rand import random_rotation
 from csb.numeric import log_sum_exp, log
 
+def load_coordinates(codes):
+    '''
+    Load protein 3 dimensional coordinate structure based on Carbon alpha.
+
+    :param codes: PDB Code and sid chain (eg: 1AKE_A)
+    :return:
+    '''
+    atoms = ['CA']
+    X = []
+    for code in codes:
+        name, chainid = code.split('_')
+        struct = PDB().get(name)
+        chain = struct[chainid]
+        X.append([residue[atom].vector for residue in chain for atom in atoms])
+
+    return np.array(X)
+
 class GibbsSampler(object):
 
     def __init__(self, X, K, estimate_sigma=True, prior=1):
@@ -486,9 +503,6 @@ class _GibbsSampler2(SegmentMixture2):
         returns the log-likelihood
         """
         N = self.Z.sum(0)
-
-        ## TODO: there is a bug in the CSB implementation
-        
         L = - 0.5 * np.sum(self.Z * self.delta / self.sigma**2) \
             - 0.5 * self.D * self.M * np.sum(N * log(2 * np.pi * self.sigma**2))
 
@@ -547,136 +561,10 @@ if __name__ == '__main__':
 
     B2 = np.sum([np.equal.outer(m,m) for m in info.membership[100:]],0)
 
-if False:
 
-    from partition import overlap, Partition
-    from csb.bio.utils import rmsd
-    
-    o, A = overlap(gibbs.membership,gibbs2.membership, return_assignment=True)
-    print o
 
-    for k, l in A:
 
-        m = np.logical_and(gibbs.membership==k, gibbs2.membership==l)
 
-        print rmsd(np.compress(m, gibbs.Y[k], 0),
-                   np.compress(m, gibbs2.Y[l], 0))
 
-    from copy import deepcopy
 
-    gibbs3 = deepcopy(gibbs)
-    for k in range(gibbs3.K):
-        m = gibbs3.membership == k
-        gibbs3.Y[k,...] = (gibbs3.Y[k].T * m).T
-
-    gibbs4 = GibbsSampler2(X, K)
-    attrs = ('sigma', 'w', 't', 'R', 'Z', 'X')
-    for attr in attrs:
-        getattr(gibbs4, attr)[...] = getattr(gibbs3, attr)
-
-    for k in range(gibbs3.K):
-        m = gibbs3.membership == k
-        gibbs4._Y += (gibbs3.Y[k].T * m).T
-
-    for alg in (gibbs, gibbs3, gibbs4):
-        alg.invalidate_delta()
-
-        print alg.log_likelihood,
-    print 
-
-    for attr in attrs:
-        print np.all(getattr(gibbs4,attr) == getattr(gibbs3,attr))
-
-if False:
-
-    ## harmonic mean estimator
-
-    beta = np.ones(500)
-
-    gibbs.anneal(beta)
-
-    L = np.array(gibbs.L)
-
-    log_Z = log(len(L)) - log_sum_exp(-L)
-
-    print log_Z
-    
-if False:
-
-    from copy import deepcopy
-
-    gibbs_copy = copy(gibbs)
-
-if False:
-
-    beta = np.linspace(0., 1.0, 1000)
-    L = []
-    for b in beta:
-        gibbs = deepcopy(gibbs_copy)
-        gibbs.anneal(np.ones(100)*b, initialize=False)
-        L.append(gibbs.L)
-        print b, np.mean(gibbs.L[-10:])
-
-    L = np.array(L)
-
-if False:
-
-    from csb.io import dump
-
-    dump((beta,L),'./beta_logL.pkl')
-        
-    beta = np.ones(1000) * 0.95
-    beta = np.fabs(np.logspace(-30, 0., 1000)-1.0)[::-1]
-    ## beta = np.logspace(-30.,0.,1000)
-    ## beta = np.linspace(0.,1.,1000)
-    gibbs.anneal(beta, n_iter=1)
-
-if False:
-
-    logZ = np.array([\
-    (1, -3379.1044272236072),
-    (2, -2964.8581276927875),
-    (3, -2818.0566297959381),
-    (4, -2829.1670373367165),
-    (5, -2854.1750376079403), 
-    (6, -2856.7182225678598), 
-    (7, -2880.2078745855829)])
-
-if False:
-
-    ## prior annealing
-
-    from em import EMFitter
-
-    for i in range(len(X)):
-        X[i] -= X[i].mean(0)
-
-    K = 20
-    n = 1#0
-
-    fitter = EMFitter(X)
-    fitter.calc_difference_distance_matrix(False)
-    Z = fitter.initialize_assignments(K)
-
-    alpha = np.logspace(2., -5., 1000)
-    gibbs = GibbsSampler(X, K)
-    gibbs.initialize()
-    gibbs.alpha_precision = gibbs.beta_precision = 1.0
-    gibbs.Z[:,:] = Z[:,:]
-    
-    from isd.ro import threaded
-    
-    threaded(gibbs.anneal_prior, alpha, n_iter=n, initialize=False, verbose=True)
-
-if False:
-
-    K = 10
-    theta = 0.01
-    l = np.zeros(300,'i')
-    l[0] = np.random.randint(0, K+1)
-    for n in range(1,len(l)):
-        if np.random.random() < theta:
-            l[n] = np.random.randint(0,K+1)
-        else:
-            l[n] = l[n-1]
     
