@@ -1,7 +1,7 @@
 import numpy as np
 
 from csb.numeric import log_sum_exp
-from csb.bio.utils import wfit, rmsd, fit_wellordered, distance_matrix, average_structure
+from csb.bio.utils import wfit, fit_wellordered, distance_matrix, average_structure
 from csb.bio.io.wwpdb import RemoteStructureProvider as PDB
 from csb.statistics import principal_coordinates
 
@@ -245,55 +245,7 @@ class SegmentMixture(object):
         s = (b-a) / (a * (a>b).astype('i') + b * (b >= a).astype('i'))
 
         return s
-        
-class SegmentMixture2(SegmentMixture):
 
-    def __init__(self, X, K):
-
-        self._Y = np.zeros((X.shape[1], self.D))
-        super(SegmentMixture2, self).__init__(X, K)
-
-    @property
-    def Y(self):
-        return self._Y
-
-    @Y.setter
-    def Y(self, Y):
-        if Y.ndim == 2:
-            self._Y[:,:] = Y[:,:]
-        elif Y.ndim == 3:
-            self.Y = Y[0]
-
-    @property
-    def delta(self):
-
-        if self._delta is None:
-
-            d = np.zeros((self.M, self.K, self.N))
-
-            for k in range(self.K):
-                for m in range(self.M):
-                    X = np.dot(self.Y,self.R[m,k].T) + self.t[m,k]
-                    d[m,k] = np.sum((self.X[m] - X)**2, -1)
-
-            self._delta = d.sum(0).T
-
-        return self._delta
-
-    def estimate_T(self):
-
-        for m in range(self.M):
-            for k in range(self.K):
-                self.R[m,k], self.t[m,k] = wfit(self.X[m], self.Y, self.Z[:,k])
-
-    def estimate_Y(self):
-
-        Y = self.Y.T * 0.
-        for k in range(self.K):
-            for m in range(self.M):
-                Y += np.dot(self.X[m]-self.t[m,k], self.R[m,k]).T * self.Z[:,k] / self.sigma[k]**2
-        n = self.M * np.dot(self.Z, 1 / self.sigma**2)
-        self.Y[:,:] = (Y / n).T
 
 class EMFitter(object):
     """
@@ -370,36 +322,3 @@ class EMFitter(object):
             return L, M
         else:
             return L
-            
-if not False and __name__ == '__main__':
-
-    from csb.statistics.mixtures import SegmentMixture as OldMixture
-
-    if not 'X' in globals():
-        X = load_coordinates(['4ake_A','1ake_B'])
-
-    K = 4
-    seg = SegmentMixture(X, K, estimate_sigma=not False)
-    seg.run()
-
-    seg2 = SegmentMixture2(X, K)
-    seg2.run()
-
-    fitter = EMFitter(X)
-    fitter.calc_difference_distance_matrix()
-    Z = fitter.initialize_assignments(10)
-    
-    seg = SegmentMixture(X,10)
-    info = Reporter()
-    seg.initialize()
-    seg.alpha_w[:] = 1. / seg.K
-    #seg.Z[:,:] = Z
-    seg.run(100, initialize=False, reporter=info)
-
-    seg2 = SegmentMixture2(X,10)
-    seg2.initialize()
-    seg2.Z[:,:] = Z
-    seg2.run(100, initialize=False)
-
-    old = OldMixture(X, K, train=True)
-
