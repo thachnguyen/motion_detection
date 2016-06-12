@@ -25,7 +25,7 @@ def load_coordinates(codes):
 
 class GibbsSampler(SegmentMixture):
 
-    def __init__(self, X, K, estimate_sigma=True, prior=1):
+    def __init__(self, X, K = 10, estimate_sigma=True, prior=1):
 
         super(GibbsSampler, self).__init__(X, K, estimate_sigma)
 

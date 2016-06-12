@@ -8,14 +8,19 @@ Compatibility
 
 In short: Motion Detection program requires python 2.7 or higher.
 
-Usage 
 ------------
 Requirement:
 
    1. numpy, scipy -- required
    2. matplotlib and wxPython -- optional, needed only if you want to plot output data
-   3. csb --- 
-   
+   3. csb from https://csb.codeplex.com/
+
+Usage:
+- M Input structures are loaded by function gibbs.load_coordinates(codes).
+- Our Gibbsampler class detects the rigid domain and categorize into different cluster K*.
+
+For example:
+-
 
 
 Motion Detection is open source and distributed under OSI-approved MIT license.
