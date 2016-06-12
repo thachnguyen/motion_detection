@@ -1,11 +1,16 @@
 import numpy as np
 
+from csb.numeric import log_sum_exp
+from csb.bio.utils import wfit, rmsd, fit_wellordered, distance_matrix, average_structure
+from csb.bio.io.wwpdb import RemoteStructureProvider as PDB
+from csb.statistics import principal_coordinates
+
 from em import EMFitter, SegmentMixture, SegmentMixture2, Reporter
 
 from csb.statistics.rand import random_rotation
 from csb.numeric import log_sum_exp, log
 
-class GibbsSampler(SegmentMixture):
+class GibbsSampler(object):
 
     def __init__(self, X, K, estimate_sigma=True, prior=1):
 
