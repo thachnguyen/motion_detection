@@ -1,25 +1,26 @@
 A probabilistic model for detecting rigid domains in protein structures
 ========================================
+This is a python program 
+
 
 Compatibility
 -------------
 
-In short: MoDet requires python 2.7 or higher.
+In short: Motion Detection program requires python 2.7 or higher.
 
 
 
 Usage 
 ------------
+Requirement:
 
-First, make sure all required dependencies are installed:
-   
    1. numpy, scipy -- required
    2. matplotlib and wxPython -- optional, needed only if you want to plot output data
-   3. csb 
+   3. csb --- 
    
 
 
-MoDet is open source and distributed under OSI-approved MIT license.
+Motion Detection is open source and distributed under OSI-approved MIT license.
 ::
 
    Copyright (c) 2016 Michael Habeck
