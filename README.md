@@ -2,40 +2,44 @@ A probabilistic model for detecting rigid domains in protein structures
 ========================================
 This is a python program to detect rigid domain in protein structure using Expectation Maximization and Gibbs sampler.
 
+Code
+----------------------------------------
+
+The Python code is to be found in the folder *./source*. 
 
 Compatibility
 -------------
 
 In short: Motion Detection program requires python 2.7 or higher.
 
-------------
 Requirement:
+------------
 
    1. numpy, scipy -- required
    2. matplotlib and wxPython -- optional, needed only if you want to plot output data
    3. csb from https://csb.codeplex.com/
 
 Usage:
-- Our main program script is gibbs.py 
+- Our main program script is ./source/gibbs.py 
 - M Input structures are loaded by function gibbs.load_coordinates(codes).
 - Our Gibbsampler class detects the rigid domain and categorize them into K* different cluster.
 
 For example:
 
 To run our program for analyzing 3 Adenylate kinase entries(1AKE_A, 4AKE_A, 1ANK_A)
+
 - First we load the 3D coordinate using load_coordinate function:
 
     input_coordinate = load_coordinate(1AKE_A, 4AKE_A, 1ANK_A)
-
-- Using input_coordinate value to load Gibbsampler class and run  
+    
+- Using input_coordinate value to construct Gibbsampler class and run:
 
     gibb = GibbsSampler(input_coordinate) # Used default value (K = 10, estimate_sigma=True, prior=1)
-    
     gibb.run(niter = 200) 
     
 - Membership for each position 
-
     membership = gibb.membership
+More information, see  test script at ./source/test.py  
 
 
 Motion Detection is open source and distributed under OSI-approved MIT license.
