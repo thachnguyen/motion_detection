@@ -1,9 +1,6 @@
 import numpy as np
-
 from csb.bio.io.wwpdb import RemoteStructureProvider as PDB
-
 from em import SegmentMixture
-
 from csb.statistics.rand import random_rotation
 from csb.numeric import log_sum_exp, log
 
