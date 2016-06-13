@@ -2,21 +2,21 @@ import numpy as np
 
 from csb.bio.io.wwpdb import RemoteStructureProvider as PDB
 
-from em import EMFitter, SegmentMixture, SegmentMixture2, Reporter
+from em import EMFitter, SegmentMixture, Reporter
 
 from csb.statistics.rand import random_rotation
 from csb.numeric import log_sum_exp, log
 
-def load_coordinates(codes):
+def load_coordinates(*args):
     '''
     Load protein 3 dimensional coordinate structure based on Carbon alpha.
 
-    :param codes: PDB Code and sid chain (eg: 1AKE_A)
+    :param args: PDB Code and side chain (eg: 1AKE_A, 4AKE_A)
     :return:
     '''
     atoms = ['CA']
     X = []
-    for code in codes:
+    for code in args:
         name, chainid = code.split('_')
         struct = PDB().get(name)
         chain = struct[chainid]
@@ -266,7 +266,7 @@ class GibbsSampler(SegmentMixture):
         return self.log_likelihood + self.log_prior
 
 
-if __name__ == '__main__':
+if False and __name__ == '__main__':
 
     Y = X.copy()
     for m in range(len(Y)):
