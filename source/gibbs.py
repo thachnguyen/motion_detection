@@ -2,7 +2,7 @@ import numpy as np
 
 from csb.bio.io.wwpdb import RemoteStructureProvider as PDB
 
-from em import EMFitter, SegmentMixture, Reporter
+from em import SegmentMixture
 
 from csb.statistics.rand import random_rotation
 from csb.numeric import log_sum_exp, log
@@ -266,34 +266,6 @@ class GibbsSampler(SegmentMixture):
         return self.log_likelihood + self.log_prior
 
 
-if False and __name__ == '__main__':
-
-    Y = X.copy()
-    for m in range(len(Y)):
-        Y[m] -= Y[m].mean(0)
-
-    K = 10 #20
-    gibbs = GibbsSampler(Y, K, prior=2)
-    info = Reporter()
-    info.info['w'] = []
-    info.info['membership'] = []
-    #if gibbs.sequential_prior: gibbs.w = 0.75
-    gibbs.run(200,reporter=info)
-
-    print gibbs.log_likelihood
-
-    B = np.sum([np.equal.outer(m,m) for m in info.membership[100:]],0)
-
-    info = Reporter()
-    info.info['w'] = []
-    info.info['membership'] = []
-    gibbs2 = GibbsSampler2(Y, K, prior=1)
-    gibbs2.initialize()
-    gibbs2.run(200,initialize=False,reporter=info)
-
-    print gibbs2.log_likelihood
-
-    B2 = np.sum([np.equal.outer(m,m) for m in info.membership[100:]],0)
 
 
 

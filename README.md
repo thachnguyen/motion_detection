@@ -16,6 +16,7 @@ Requirement:
    3. csb from https://csb.codeplex.com/
 
 Usage:
+- Our main program script is gibbs.py 
 - M Input structures are loaded by function gibbs.load_coordinates(codes).
 - Our Gibbsampler class detects the rigid domain and categorize them into K* different cluster.
 
