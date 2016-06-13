@@ -20,6 +20,7 @@ Usage:
 - Our Gibbsampler class detects the rigid domain and categorize them into K* different cluster.
 
 For example:
+
 To run our program for analyzing 3 Adenylate kinase entries(1AKE_A, 4AKE_A, 1ANK_A)
 - First we load the 3D coordinate using load_coordinate function:
 
@@ -28,8 +29,11 @@ To run our program for analyzing 3 Adenylate kinase entries(1AKE_A, 4AKE_A, 1ANK
 - Using input_coordinate value to load Gibbsampler class and run  
 
     gibb = GibbsSampler(input_coordinate) # Used default value (K = 10, estimate_sigma=True, prior=1)
+    
     gibb.run(niter = 200) 
+    
 - Membership for each position 
+
     membership = gibb.membership
 
 
