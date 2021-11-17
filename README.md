@@ -41,6 +41,9 @@ To run our program for analyzing 3 Adenylate kinase entries(1AKE_A, 4AKE_A, 1ANK
     membership = gibb.membership
 More information, see  test script at ./source/test.py  
 
+# Reference: 
+Nguyen, Thach, and Michael Habeck. "A probabilistic model for detecting rigid domains in protein structures." Bioinformatics 32.17 (2016): i710-i717.
+
 
 Motion Detection is open source and distributed under OSI-approved MIT license.
 ::
