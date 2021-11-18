@@ -1,25 +1,24 @@
-A probabilistic model for detecting rigid domains in protein structures
-========================================
+#**A probabilistic model for detecting rigid domains in protein structures
+**========================================
 This is a python program to detect rigid domain in protein structure using Expectation Maximization and Gibbs sampler.
 
-Code
+##**Code**
 ----------------------------------------
 
 The Python code is to be found in the folder *./source*. 
 
-Compatibility
+##**Compatibility**
 -------------
 
 In short: Motion Detection program requires python 2.7 or higher.
 
-Requirement:
+##**Requirement**:
 ------------
 
-   1. numpy, scipy -- required
-   2. matplotlib and wxPython -- optional, needed only if you want to plot output data
-   3. csb from https://csb.codeplex.com/
-
-Usage:
+   numpy==1.10.3, scipy==0.17.0, csb==1.2.5, matplotlib 
+   
+  
+##**Usage**:
 - Our main program script is ./source/gibbs.py 
 - M Input structures are loaded by function gibbs.load_coordinates(codes).
 - Our Gibbsampler class detects the rigid domain and categorize them into K* different cluster.
@@ -41,7 +40,7 @@ To run our program for analyzing 3 Adenylate kinase entries(1AKE_A, 4AKE_A, 1ANK
     membership = gibb.membership
 More information, see  test script at ./source/test.py  
 
-# Reference: 
+## **Reference**: 
 Nguyen, Thach, and Michael Habeck. "A probabilistic model for detecting rigid domains in protein structures." Bioinformatics 32.17 (2016): i710-i717.
 
 
