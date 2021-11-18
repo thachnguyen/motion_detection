@@ -1,5 +1,6 @@
-**A probabilistic model for detecting rigid domains in protein structures
-**========================================
+A probabilistic model for detecting rigid domains in protein structures
+========================================
+
 This is a python program to detect rigid domain in protein structure using Expectation Maximization and Gibbs sampler.
 
 **Code**
